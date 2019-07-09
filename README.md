@@ -4,12 +4,22 @@
 
 ## Project Description 
 
-We are building a geographical color-coded map of Philadelphia using Google Maps API where the user can select neighborhoods, triangulate and free-draw areas of the city to show overlay information on crime in the designated areas. The crime information is pulled from two different APIs that are publicly listed under OpenDataPhilly and include a Shooting Victims API separated under Homocide, Robbery, Weapons Offence and Aggravated Assault, as well as a Crimes Incident API which includes all other crimes. Both of these APIs are continuously updated and include crime from 2015 until today.
+We are building a geographical color-coded map of Philadelphia using Open Street Maps & Leaflet API where the user can select neighborhoods, triangulate and free-draw areas of the city to show information on crime in the designated areas. The crime information is pulled from OpenDataPhilly using the CartoDB API, there are various datasets but to start we'll be focusing on shooting and crime. Data is continuously updated and includes crime from 2015 until today.
 
-Along with the map, the site will have a page with general statistics with charts and diagrams for the user to see the data from a larger scope of the entire city. The API documentation for the both Shooting Victims and Crime Incidents Data are provided on the City of Philadelphia github, and a contact page is provided in case we need additional help or documentation to facilitate building the site. 
 
 ## *BRAINSTORMING*
-Feel free to dump any links or notes in the Project Page https://github.com/users/andresagu/projects/1. We don't too much work in order to get the functionality we need so based on research you do make sure to drop notes about what you find 
+Feel free to dump any links or notes in the Project Page https://github.com/users/andresagu/projects/1. We don't too much work in order to get the functionality we need so based on research you do make sure to drop notes about what you find:
+
+### *USEFUL LINKS*
+* Solid examples of features we want to implement using leaflet
+   * https://maptimeboston.github.io/leaflet-intro/
+* Useful tool to help us draw our own polygons and get their GeoJSON coordinates
+   * https://www.keene.edu/campus/maps/tool/
+* Raw data of all philly neighborhoods (shadded and outlined) - we should use and modify this for more simple purposes
+   * https://raw.githubusercontent.com/blackmad/neighborhoods/master/gn-philadelphia.geojson
+* Pages that may help us figure out how to Query the database for location based queries
+   * https://carto.com/blog/nearest-neighbor-joins/
+   * https://github.com/CityOfPhiladelphia/carto-api-explorer/issues/4
 
 
 ## Breakdown of Tasks
@@ -17,12 +27,13 @@ tasks for project will be broken down into 2 overarching components (front end &
 
 ### Back End
 
-Google Maps API integration | 	OpenDataPhilly Integration
+Open Street Maps (Leaflet API) Integration | 	OpenDataPhilly (CartoDB API) Integration
 ------------ | -------------
-Section map of just Philly  | Figure out GET requests and what JSON shooting/crime data will be formatted
-Break up map in sections based on neighborhood and store this geo-location data | Investigate how to return data based on geo-location data sent to API
-Overlay color gradient over map based on neighborhood - *Gradient will be based on ODP data to decide how light or dark the color is*| Parse JSON crime data so that it’s easy to feed into google maps overlay
-Create points of interest based on data from ODP (see if this is possible)  | Blank
+Section map of just Philly | Research formating for the_geom query in order to pull data from ODP db's
+Break up map in sections based on neighborhood/or zones and store this geo-location data | Test the_geom query and investigate how to parse results
+Overlay color gradient over map based on neighborhood - *Gradient will be based on ODP data to decide how light or dark the color is*| Parse JSON crime data so that it’s easy to adjust our map based on it
+Create points of interest based on data from ODP (see if this is possible)  | Create div/headers/etc overlays that we may want to use to display specific data
+Leaflet allows for point of interest info that will let us give specific data when clicking on a point of interest | Determine whether we'd like to use the leaflet methods to display data on our page or if we want just custom data overlays
 Allow user to free draw for map for selection (possible feature) | Blank
 
 
