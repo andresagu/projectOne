@@ -5,6 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
@@ -41,10 +43,36 @@
     // attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
     attribution: '© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="http://cartodb.com/attributions#basemaps">CartoDB</a>',
     maxZoom: 15,
-    minZoom: 13,
+    minZoom: 10,
     subdomains: 'abcd'
 }).addTo(mymap);
 
+
+$.getJSON('https://raw.githubusercontent.com/blackmad/neighborhoods/master/gn-philadelphia.geojson',function(hoodData){
+ L.geoJson( hoodData ).addTo(mymap);
+});
+
+
+// Set up PostGIS SQL Query for "center city"
+//SELECT columns in table FROM shootings WHERE ST_WITHIN(SHAPE 1,SHAPE 2);
+var center_city_query ="SELECT location FROM shootings WHERE ST_WITHIN(the_geom,ST_GeomFromText('MULTIPOLYGON(((-75.1427972 39.9465946,-75.1783225 39.9509703,-75.1767059 39.9590909,-75.1411806 39.9549789,-75.1427972 39.9465946)))',4326))"
+
+
+//JUST ANOTHET TEST QUERY
+var sample2 = "SELECT the_geom, the_geom_webmercator,location,point_x,point_y FROM shootings LIMIT 10";
+
+// Get CartoDB selection as GeoJSON and logs out the data it returned
+function showCenterCityShootings(){
+  $.getJSON("https://phl.carto.com/api/v2/sql?q="+center_city_query, function(data) {
+    sampleLocations = data;
+
+    console.log(sampleLocations);
+  });
+};
+
+
+
+showCenterCityShootings();
 
 
     </script>
