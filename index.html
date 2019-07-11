@@ -55,7 +55,7 @@ $.getJSON('https://raw.githubusercontent.com/blackmad/neighborhoods/master/gn-ph
 
 // Set up PostGIS SQL Query for "center city"
 //SELECT columns in table FROM shootings WHERE ST_WITHIN(SHAPE 1,SHAPE 2);
-var center_city_query ="SELECT location FROM shootings WHERE ST_WITHIN(the_geom,ST_GeomFromText('MULTIPOLYGON(((-75.1427972 39.9465946,-75.1783225 39.9509703,-75.1767059 39.9590909,-75.1411806 39.9549789,-75.1427972 39.9465946)))',4326))"
+var center_city_query ="SELECT location, the_geom FROM shootings WHERE ST_WITHIN(the_geom,ST_GeomFromText('MULTIPOLYGON(((-75.1427972 39.9465946,-75.1783225 39.9509703,-75.1767059 39.9590909,-75.1411806 39.9549789,-75.1427972 39.9465946)))',4326))"
 
 
 //JUST ANOTHET TEST QUERY
