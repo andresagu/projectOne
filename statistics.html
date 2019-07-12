@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="http://vizw.it/scripts/vizwit-embed.js"></script>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Philadelphia Statistics</title>
     <!-- Required meta tags -->
@@ -9,10 +10,95 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
+    <link rel="stylesheet" href="css/statsStyle.css">
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                      <a class="nav-link" href="index.html">Map<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="statistics.html">Philadelphia Statistics</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                      </li>
+                  </ul>
+                </div>
+              </nav>
+    <div class="jumbotron">
+        <h1 class="display-4">Table of Data and Additional Graphs</h1>
+        <p class="lead">Statistics provided by Open Data Philly</p>
+        <hr class="my-4">
+        <p>Check out the Map page for more in-depth information !</p>
+      </div>
+
+        <div style="min-height: 230px">
+                <script class="vizwit" type="application/json">
+              {
+                "title": "Number of Shooting Victims by Date",
+                "provider": "carto",
+                "domain": "phl.carto.com",
+                "dataset": "shootings",
+                "chartType": "datetime",
+                "groupBy": "date_trunc('month', date_)",
+                "triggerField": "date_",
+                "baseFilters": [],
+                "filters": {},
+                "aggregateFunction": "count",
+                "order": "label"
+              }
+                </script>
+              </div>
+
+
+                  <div style="min-height: 230px">
+                        <script class="vizwit" type="application/json">
+                      {
+                        "title": "Number of Shooting Victims by Officer Involved",
+                        "description": "Whether a Police Officer was involved in the shooting.",
+                        "provider": "carto",
+                        "domain": "phl.carto.com",
+                        "dataset": "shootings",
+                        "chartType": "pie",
+                        "groupBy": "officer_involved",
+                        "triggerField": "officer_involved",
+                        "baseFilters": [],
+                        "filters": {},
+                        "dontFilterSelf": true,
+                        "aggregateFunction": "count"
+                      }
+                        </script>
+                      </div>
+
+                      <div style="min-height: 230px">
+                            <script class="vizwit" type="application/json">
+                          {
+                            "title": "Shooting Victims",
+                            "chartType": "table",
+                            "provider": "carto",
+                            "domain": "phl.carto.com",
+                            "dataset": "shootings",
+                            "columnsToHide": [
+                              "cartodb_id",
+                              "objectid",
+                              "the_geom",
+                              "the_geom_webmercator"
+                            ],
+                            "baseFilters": [],
+                            "filters": {},
+                            "limit": 10,
+                            "search": null,
+                            "offset": 0
+                          }
+                            </script>
+                          </div>
     
 </body>
 </html>
