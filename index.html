@@ -17,11 +17,12 @@
   integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
   crossorigin=""></script>
 
+<!-- SOURCE JAVASCRIPT -->
   <link rel="stylesheet" href="css/style.css">
 
 
 
-    <title>Map Testing</title>
+    <title>Map</title>
   </head>
   <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -40,51 +41,25 @@
                 </div>
               </nav>
     <div class="jumbotron">
-        <h1 class="display-4">Shooting Incindents in Philadelphia by Neighborhood</h1>
+        <h1 class="display-5">Shooting Incindents in Philadelphia by Neighborhood</h1>
         <p class="lead">Click on a neighborhood to see relevant shooting incident statistics</p>
-        <hr class="my-4">
+        <hr class="my-2">
         <p>Check out the Philadelphia Statistics and About page for more information</p>
       </div>
 
-     <div id="mapid"></div>
+    <!-- <div class = "container-fluid"> -->
+     <div id="mapid"> </div>
+
+     <!-- </div> -->
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script type="text/javascript">
-      var mymap = L.map('mapid').setView([39.952, -75.165], 14);
-  //     L.tileLayer( 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  //       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  //       subdomains: ['a','b','c']
-  // }).addTo( mymap );
-  L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png',{
-    // attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-    attribution: '© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="http://cartodb.com/attributions#basemaps">CartoDB</a>',
-    maxZoom: 15,
-    minZoom: 10,
-    subdomains: 'abcd'
-}).addTo(mymap);
-$.getJSON('https://raw.githubusercontent.com/blackmad/neighborhoods/master/gn-philadelphia.geojson',function(hoodData){
- L.geoJson( hoodData ).addTo(mymap);
-});
-// Set up PostGIS SQL Query for "center city"
-//SELECT columns in table FROM shootings WHERE ST_WITHIN(SHAPE 1,SHAPE 2);
-var center_city_query ="SELECT location FROM shootings WHERE ST_WITHIN(the_geom,ST_GeomFromText('MULTIPOLYGON(((-75.1427972 39.9465946,-75.1783225 39.9509703,-75.1767059 39.9590909,-75.1411806 39.9549789,-75.1427972 39.9465946)))',4326))"
-//JUST ANOTHET TEST QUERY
-var sample2 = "SELECT the_geom, the_geom_webmercator,location,point_x,point_y FROM shootings LIMIT 10";
-// Get CartoDB selection as GeoJSON and logs out the data it returned
-function showCenterCityShootings(){
-  $.getJSON("https://phl.carto.com/api/v2/sql?q="+center_city_query, function(data) {
-    sampleLocations = data;
-    console.log(sampleLocations);
-  });
-};
-showCenterCityShootings();
-    </script>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
+    <script src="src/src.js"></script>
 
   </body>
 </html>

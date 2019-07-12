@@ -1,8 +1,22 @@
-#mapid {
+/* #mapid {
   height: 800px;
   width: 1200px;
   margin: auto;
 
+
+} */
+
+body {
+    padding: 0;
+    margin: 0;
+}
+html, body, #mapid {
+    height: 100%;
+    width: 100%;
+}
+
+.container-fluid{
+  background: blue;
 
 }
 
@@ -13,4 +27,10 @@
   margin-left:120px;
   margin-right:120px;
   margin: auto;
+}
+
+.jumbotron{
+  margin-bottom: 0;
+  padding-top: 20px;
+  padding-bottom: 10px;
 }
