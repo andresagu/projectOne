@@ -1,0 +1,8 @@
+.navbar-nav > li{
+    text-align: center;
+    padding-left:200px;
+    padding-right:200px;
+    margin-left:120px;
+    margin-right:120px;
+    margin: auto;
+  }
