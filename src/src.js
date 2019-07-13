@@ -1,4 +1,6 @@
 
+
+
     // Set up PostGIS SQL Query for "center city"
     //SELECT columns in table FROM shootings WHERE ST_WITHIN(SHAPE 1,SHAPE 2);
     var center_city_query ="SELECT ST_AsGeoJSON(the_geom),location, race, fatal, age FROM shootings WHERE ST_WITHIN(the_geom,ST_GeomFromText('MULTIPOLYGON(((-75.1815463  39.9601819, -75.1808693 39.9595842, -75.1799365 39.9569909, -75.1808693 39.9543851, -75.1824149 39.9506994, -75.1869656 39.9466186, -75.1849049 39.9457629, -75.1604748 39.9430415, -75.1482868 39.9414128, -75.136335 39.9401953, -75.1358845 39.9467101, -75.1343775 39.9525632, -75.1398727 39.9536162, -75.1477287 39.9548855, -75.1500893 39.9568267, -75.1603459 39.9576162, -75.1815463 39.9601819 )))',4326))"
@@ -24,7 +26,6 @@
     var northWestCode=1;
     var northPhillyCode=2;
     var southPhillyCode=3;
-
 
     // Get CartoDB selection as GeoJSON and logs out the data it returned
     function populateShootings(city, cityCode){
@@ -92,6 +93,7 @@
    populateShootings(north_philly_query, northPhillyCode),populateShootings(south_phila_query,southPhillyCode)]).then(colorMap)
 
     //populateShootings(south_phila_query);
+
 
 function colorMap(){
     $.ajax({
