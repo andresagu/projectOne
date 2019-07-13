@@ -79,8 +79,8 @@
 
   L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png',{
     attribution: '© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="http://cartodb.com/attributions#basemaps">CartoDB</a>',
-    maxZoom: 15,
-    //minZoom: 10,
+    maxZoom: 16,
+    minZoom: 12,
     subdomains: 'abcd',
 }).addTo(myMainMap);
 
