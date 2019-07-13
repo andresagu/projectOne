@@ -11,8 +11,56 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    
+    <link rel="stylesheet" href="css/style.css">
+
 </head>
 <body>
-    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="index.html">Map<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="statistics.html">Philadelphia Statistics</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="about.html">About</a>
+              </li>
+          </ul>
+        </div>
+      </nav>
+<div class="jumbotron">
+<h1 class="display-4">About this Project</h1>
+<p class="lead">General information on APIs and aims of the project</p>
+<hr class="my-4">
+<p>Check out the Map and Stats pages for more in-depth information !</p>
+</div>
+
+<div class="aboutbody">
+
+<h4>Open Data Philly</h4>
+<br>
+<h5>OpenDataPhilly is a catalog of open data in the Philadelphia region. In addition to being the official open data repository for the City, it includes data sets from many organizations in the region.</h5>
+<br>
+<p>We used the Shooting Incidents API, a public SQL Carto database API that is kept up to date by the municipality of the City of Philadelphia. You can find the Shooting Incidents API here: <a href="https://www.opendataphilly.org/dataset/shooting-victims/resource/af2a6d15-234e-44de-83c7-dd23668ee496">https://www.opendataphilly.org/dataset/shooting-victims/resource/af2a6d15-234e-44de-83c7-dd23668ee496</a> </p>
+
+</div>
+
+<br>
+<hr>
+
+<div class="aboutbody">
+<h4>Leaflet & OpenStreetMap</h4>
+<br>
+<h5>Leaflet is a lightweight JavaScript library for interactive maps, most notable OpenStreetMap. OpenStreetMap is an open-source wiki API which contains all geographical information to display maps.</h5>
+<br>
+<p>We used the Leaflet & OpenStreetMap to display our map and display our data in a geojson format. We had to convert our own mapped out coordinates of each neighborhood into a SQL Query to retrieve data from the database. You can find the Leaflet API here: <a href="https://leafletjs.com/">https://leafletjs.com/</a> </p>
+<br>
+</div>
+
+
 </body>
 </html>

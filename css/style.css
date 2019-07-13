@@ -22,3 +22,30 @@ body {
     padding: 0;
     margin: 0;
 }
+
+.statisticbox {
+  padding: 0;
+  margin: 0;
+  max-width: 95%;
+  padding-left: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 20px;
+}
+
+.aboutbody {
+  text-align: left;
+  padding: 0;
+  margin: 0;
+  max-width: 95%;
+  padding-top: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
