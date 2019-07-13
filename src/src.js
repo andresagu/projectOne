@@ -10,16 +10,19 @@
     var south_phila_query ="SELECT ST_AsGeoJSON(the_geom), location, race, fatal, age  FROM shootings WHERE ST_WITHIN(the_geom,ST_GeomFromText('MULTIPOLYGON((( -75.1868504 39.9467924, -75.1893407 39.9448183, -75.192518 39.9421862, -75.1950084 39.9418571, -75.1980998 39.9429758, -75.199989 39.9435681, -75.2024794 39.9436997, -75.2051414 39.9418571, -75.2051414 39.9373822, -75.2062578 39.9340916, -75.2084046 39.9323146, -75.2113243 39.9283656, -75.2122689 39.924153, -75.2104656 39.9213226, -75.2075482 39.920796, -75.2038565 39.9209934,-75.2017102 39.9196769, -75.2027404 39.916188, -75.2068614 39.9108555, -75.2137296 39.9103288, -75.2157042 39.9076294, -75.2147598 39.9023621, -75.2110681 39.8969627,-75.2032556 39.8939335, -75.1950996 39.8907726, -75.1941552 39.8832647, -75.1932108 39.8789176, -75.1888324 39.8805643, -75.1825651 39.8818815, -75.1711468 39.8824084, -75.1557792 39.8829354, -75.1473656 39.883594, -75.1438457 39.8845819, -75.1398106 39.8880725, -75.1360331 39.8914311, -75.133801 39.8951847, -75.1304527 39.9005843, -75.1284781 39.9099996, -75.128564 39.9142788, -75.1310537 39.9190186, -75.1344019 39.925996, -75.1354123 39.9296819, -75.1359473 39.9340916, -75.1362048 39.9398829, -75.1362048 39.9411333, -75.1840246 39.9470556, -75.1841963 39.9457396, -75.1853983 39.9460028, -75.1868578 39.9468582, -75.1868504 39.9467924)))',4326))"
 
 
+//THIS WILL HOLD THE COUNT OF SHOOTINGS
     var centerCityCount;
     var northWestCount;
     var northPhillyCount;
     var southPhillyCount;
 
+//THIS IS NOT IDEAL BECAUSE WE MAY BE STORING TOO MUCH DATA ON OUR FRONT END BUT THIS WILL STORE ALL THE DATA FROM EACH QUERY SO TAHT WE CAN GO THROUGH IT LATER
     var centerCityData;
     var northWestData;
     var northPhillyData;
     var southPhillyData;
 
+//THESE ARE THE CODES USED TO TELL THE AREAS APART
     var centerCityCode =0;
     var northWestCode=1;
     var northPhillyCode=2;
@@ -27,12 +30,24 @@
 
 
     // Get CartoDB selection as GeoJSON and logs out the data it returned
+    //THIS FUNCTION NEEDS THE CITY QEURY (CITY) NAME AND CITY CODE
+    //CITY IS THE QUERY THAT WE ARE PASSING IN ORDER TO GET RESULTS FOR A SPECIFIC ZONE
+    //CITYCODE IS USED SO WE CAN UPDATE THE CORRECT VARIABLES FOR EACH CALL SINCE WE HAVE TO MAKE MULTIPLE CALLS FOR EACH REGION
+    //SO THERE NEEDS TO BE LOGIC TO TELL THEM ALL APART. THAT'S WHAT THE CITY CODE IS FOR
+    //*** this will make the most sense if you check the parameters that are getting passed into this below - LOOK AT LINE 98****
     function populateShootings(city, cityCode){
+
+      //THIS IS A PROMISE FUNCTION WHICH ALLOWS US TO RUN THIS FUNCTION BEFORE ANY OTHER AJAX CALLS.
+      //THIS IS SO WE CAN GET ALL THE CITY DATA BEFORE WE COLOR THE MAP/OR ADD DATA TO THE MAP
       return new Promise(function (resolve, reject) {
         $.getJSON("https://phl.carto.com/api/v2/sql?q="+city, function(data) {
+
+        //SAVES THE DATA WE RETURN FORM THE DATABASE INTO sampleLocations...
         sampleLocations = data;
 
         console.log(sampleLocations);
+
+        //THIS IS THE SWITCH CASE FOR THE CITY CODES. SEE THE CITYCODE VARIABLES TO SEE HOW THEYRE MAPPED.
         switch(cityCode) {
           case 0:
             centerCityData = sampleLocations;
@@ -55,6 +70,7 @@
 
         }
 
+        //JUST LOGGING THE COUNTS TO MAKE SURE THEY GET FILLED
         console.log("this is the count CC = " + centerCityCount);
         console.log("this is the count NW = " + northWestCount);
         console.log("this is the count NP = " + northPhillyCount);
@@ -70,13 +86,6 @@
 
   var myMainMap = L.map(mapDiv[0]).setView([39.952, -75.165], 12);
 
-      //var centerCityMap = L.map('mapid').setView([-75.1621763, 39.952446], 16);
-
-  //     L.tileLayer( 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  //       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  //       subdomains: ['a','b','c']
-  // }).addTo( mymap );
-
   L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png',{
     attribution: '© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="http://cartodb.com/attributions#basemaps">CartoDB</a>',
     maxZoom: 16,
@@ -85,27 +94,41 @@
 }).addTo(myMainMap);
 
 
-//colorMap();
-
+//runs the promise loop that will first run all the AJAX calls to get data and then color the map based on that data
    Promise.all([populateShootings(center_city_query, centerCityCode),
    populateShootings(north_west_query, northWestCode),
    populateShootings(north_philly_query, northPhillyCode),populateShootings(south_phila_query,southPhillyCode)]).then(colorMap)
 
-    //populateShootings(south_phila_query);
 
+//This color map funciton is a little bit buggy and you can see this in the console since some AJAX calls to get data
+//are made too many times...
 function colorMap(){
+
+  //goes to our geojson map and retreives the geographical data
     $.ajax({
       type: "GET",
       url: "https://raw.githubusercontent.com/andresagu/projectOne/master/phila.geojson",
+
+      //on success (getting the data) runs this function
       success: function (hoodData) {
         L.geoJson( hoodData  , {
+
+          //this function can take in some style parameters as a function so this is what this does
+          //Takes in the property feature which is actually the area that we feed into it --
+          //So each feature is a region (polygon)on the map...check the json i think theyre labeled features
         style: function(feature){
           var fillColor;
+          //Saves the name of the feature in order to differentiate them and color them accordingly
+          //without this check this function will color all the features the same color
           var name = feature.properties.name;
+
+          //this isnt actually necessary but I was testing stuff since there are some global variables that i wasn't sure would work
+          //centerCityCount works just fine in place of centerCityDensity
           var centerCityDensity = centerCityCount;
-          var southPhillyDensity = southPhillyCount;
+
 
           console.log(name);
+          //This is the logic check to match the city to its data when it's clicked
           if(name === "Center City" && centerCityDensity>10){
             fillColor = "#F08080";
 
@@ -122,15 +145,21 @@ function colorMap(){
 
           }
           else fillColor = "#DCDCDC";  // no data
+          //At the end it returns the correct color and styling settings for the shape
+          //remember this is still inside the "style:" piece so it NEEDS this return because the style requries this type of data
           return { color: "#999", weight: 1, fillColor: fillColor, fillOpacity: .6 };
         },
+
+        //This is a leaflet function which basically runs a function for each feature (shape)
         onEachFeature: function( feature, layer ){
 
           console.log("in here");
 
           var shootCount;
 
-
+          //Again we can do a similar check as above in order to tell which feature is what and tell them all apart
+          //in this case I'm populating the count but you can do even more with it if the data is parsed properly
+          //See the for loop below
           if(feature.properties.name === "Center City"){
             shootCount = centerCityData.total_rows;
 
@@ -151,18 +180,26 @@ function colorMap(){
             shootCount = 0;
           }
 
+          //This is another leaflet function that lets you bind or tie a popup to something, in this case our shapes or "layer" that was passed in as a parameter
           layer.bindPopup( "<strong>" + feature.properties.name + "</strong> <br>" + shootCount + " shootings have occured in this area" );
 
+          //This for loop is in testing and should most likely not go here because this function runs for EVERY shape. which means this loop runs too much...
+          //you could take an approach like above witth the name matching in order to only run it when its needed/ matches the city its getting data for
+          //another idea is to look into leaflet layers. You can make a layer for each area and turn it off or on when it gets clicked -- this is a bit more complicated but would probably be the cleanest
 
+          //This for loop goes thru all the data that got returned aka centerCityCount which is all the # of shootings
           for(var i=0; i<centerCityCount; i++){
+            //Then it needs to take the geojson and pull data from it
+            //KEY POINT HERE - st_asgeojson is really useful for cartoDB becasue it takes the_geom data which holds all the location info and transforms it into a geojson string
+            //Then i use JSON.parse() to turn the string into a usable object (try printing centerCityData.rows[0].st_asgeojson without the parse()...you'll see it's just a string)
             var data = JSON.parse(centerCityData.rows[i].st_asgeojson);
                       console.log(data);
                       console.log(data.coordinates);
+
+                      //Then once we have the data in object/JSON format we can go ahead and pull coordinates out. what sucks is leaflet flips the coordinates around so thats why 1 is before 0 in this code
+                      //note the coordinates is a 2 entry array (lat, long)
                       L.marker([data.coordinates[1],data.coordinates[0]]).addTo(myMainMap).bindPopup(centerCityData.rows[i].location);
-
           }
-
-
         }
         }).addTo(myMainMap);
         return Promise.resolve(true)
